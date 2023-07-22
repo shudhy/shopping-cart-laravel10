@@ -1,0 +1,51 @@
+@extends('auth.layouts')
+
+@section('content')
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Show Item
+                </div>
+                <div class="card-body">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Nama</label>
+                                <input type="text" class="form-control" name="name" value="{{ $product->name }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Gambar</label>
+                                <img src="{{ asset('storage/images/'.$product->image) }}" class="w-100 rounded">
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Kategori</label>
+                                <select name="kategori" class="form-select" aria-label="Default select example">
+                                    <option selected>Pilih Kategori</option>
+                                    @foreach($kategori as $item)
+                                    <option value="{{ $item->id }}"@if($item->id == $product->id_kategori) selected @endif>{{ $item->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Description</label>
+                                <textarea class="form-control" name="desc" rows="5">{{ $product->description }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Harga</label>
+                                <input type="number" class="form-control" name="price" value="{{ $product->price }}" >
+                            </div>
+
+                            <a href="{{ route('itemx') }}" class="btn btn-md btn-primary">Kembali</a>
+
+                        </form> 
+                </div>
+            </div>
+
+                        
+                
+            </div>
+        </div>
+   
+   
+    
+@endsection
