@@ -6,9 +6,9 @@
     <div class="col-md-8">
 
         <div class="card">
-            <div class="card-header">Register</div>
+            <div class="card-header">Tambah User</div>
             <div class="card-body">
-                <form action="{{ route('store') }}" method="post">
+                <form action="{{ route('users.store') }}" method="post">
                     @csrf
                     <div class="mb-3 row">
                         <label for="name" class="col-md-4 col-form-label text-md-end text-start">Name</label>
@@ -29,15 +29,6 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="name" class="col-md-4 col-form-label text-md-end text-start">Number</label>
-                        <div class="col-md-6">
-                          <input type="number" class="form-control @error('number') is-invalid @enderror"  name="number" value="{{ old('number') }}">
-                            @if ($errors->has('number'))
-                                <span class="text-danger">{{ $errors->first('number') }}</span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
                         <label for="password" class="col-md-4 col-form-label text-md-end text-start">Password</label>
                         <div class="col-md-6">
                           <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
@@ -53,7 +44,16 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Register">
+                        <label for="Role" class="col-md-4 col-form-label text-md-end text-start">Role</label>
+                        <div class="col-md-6">
+                        <select name="role" class="form-select" aria-label="Default select example">
+                            <option value="admin">Admin</option>
+                            <option value="user" selected>User</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Simpan">
                     </div>
                     
                 </form>

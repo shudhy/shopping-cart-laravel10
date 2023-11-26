@@ -31,16 +31,18 @@
 <div class="row">
     
     @foreach($products as $product)
-        <div class="col-md-2 col-6 mb-3">
-            <div class="card">
-                <div class="card-body"> 
+        <div class="col-md-2 col-6 mb-3" >
+            <div class="card" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="card-body" style="flex: 1;"> 
                 <a href="#" data-toggle="modal" data-target="#myModal{{ $product->id }}"><img class="img-fluid" src="/storage/images/{{ $product->image }}" alt="Gambar Produk"> </a>
                
                     <h6 class="card-title">{{ substr($product->name, 0, 21) }}</h6>
-                    @php
-                        $harga = $product->price;
-                    @endphp
-                    <p class="card-text"><strong>Rp.{{ number_format($harga, 0, ',', '.') }}</strong></p>
+                    
+                    @foreach ($product->prices as $price)
+                        @if ($price->unit->name !== "" && $price->unit->name !== "0")
+                            <h6 class="card-text" style="font-size: 10px;">Rp.{{ number_format($price->price, 0, ',', '.') }}/{{ $price->unit->name }}</h6>
+                        @endif
+                    @endforeach
                     <p class="btn-holder"><a href="{{ route('addProduct.to.cart', $product->id) }}" class="btn btn-warning" >Beli</a> </p>
                     
 
@@ -56,7 +58,12 @@
                                 <div class="modal-body">
                                     <p>{{ strip_tags( $product->description) }}</p>
                                     
-                                    <p class="card-text"><strong>Rp.{{ number_format($harga, 0, ',', '.') }}</strong></p>
+                                
+                                    @foreach ($product->prices as $price)
+                                        @if ($price->unit->name !== "" && $price->unit->name !== "0")
+                                            <h6 class="card-text" >Rp.{{ number_format($price->price, 0, ',', '.') }}/{{ $price->unit->name }}</h6>
+                                        @endif
+                                    @endforeach
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

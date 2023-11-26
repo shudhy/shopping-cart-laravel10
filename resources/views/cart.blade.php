@@ -1,13 +1,14 @@
 @extends('shop')
   
 @section('content')
-<table id="cart" class="table table-bordered mt-4">
+<table class="table table-hover" id="selecteditemTable">
 @if(session('cart'))
     <thead>
         <tr>
             <th>Product</th>
-            <th>Price</th>
             <th>Qty</th>
+            <th>Satuan</th>
+            <th>Price</th>
             <th>Total</th>
             <th></th>
         </tr>
@@ -19,6 +20,8 @@
         @php $total = 0 @endphp
         
             @foreach(session('cart') as $id => $details)
+            
+           
                 
                 <tr rowId="{{ $id }}">
                     <td data-th="Product">
@@ -28,22 +31,31 @@
                             </div>
                         </div>
                     </td>
-                    @php 
-                    $price =$details['price'] 
-                    @endphp
-                    <div data-th="Price"> @php $details['price'] @endphp</div>
-                    <td>Rp.{{ number_format($price, 0, ',', '.') }}</td>
-                    <td data-th="qty"> 
-                    <a href="{{ route('minProduct.to.cart', $id) }}" class="btn btn-primary btn-sm">-</a>    
-                    {{$details['quantity']}}
+                    
+                    <td>
+                    <a href="{{ route('minProduct.to.cart', $id) }}" class="btn btn-primary btn-sm" id="mines">-</a>    
+                    <input type="number" class="quantity-input" style="width:30px;" value="{{$details['quantity']}}" readonly>
+                    <a href="{{ route('addProduct.to.cart', $id) }}" class="btn btn-primary btn-sm" id="plus">+</i></a>
+                </td>
+                
+                    <td>
+                        
+                    <select class="satuan-select2">
+                    @foreach ($details['units'] as $unit)
+                        @if ($unit['name'] !== "" && $unit['name'] > 0)
+                            <option value="{{ $unit['id'] }}" @if ($unit['id'] == $details['unit']) selected @endif>{{ $unit['name'] }}</option>
+                        @endif
+                    @endforeach
+                </select>
 
-                    <a href="{{ route('addProduct.to.cart', $id) }}" class="btn btn-primary btn-sm">+</i></a>
                     </td>
+                    <td class="data-price">{{ $details['price']}} </td>
+
+                    
                     @php 
                     $stotal =$details['price'] * $details['quantity'] 
                     @endphp
-                    <div data-th="Subtotal" class="text-center">@php $details['price'] * $details['quantity'] @endphp </div>
-                    <td class="text-center">Rp.{{ number_format($stotal, 0, ',', '.') }} </td>
+                    <td class="subtotal" data-price="{{ $details['price'] }}">{{$stotal}}</td>
                     <td class="actions">
                         <a class="btn btn-outline-danger btn-sm delete-product">Del</i></a>
                     </td>
@@ -61,53 +73,63 @@
                  <tr>
                     <td></td>
                     <td></td>
-                    <td>Total :</td>
+                    <td></td>
                     <td>
 
-                    <input type="text" id="total_pembelian" name="total_pembelian" class="form-control" value="{{ $total }}"readonly hidden>
-                    <input type="text"  class="form-control" value="Rp.{{ number_format($total, 0, ',', '.') }}"readonly>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Alamat Tujuan :</td>
-                    <td><input type="text" name="alamat" class="form-control"></td>
+                    <td><input type="text" name="alamat" class="form-control @error('alamat') is-invalid @enderror" value="{{ old('alamat') }}"></td>
+                    @error('alamat')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                     <td></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Desa :</td>
                     <td>
-                    <select class="form-select" name="desa_tujuan" aria-label="Default select example">
-                        <option selected>Pilih Desa Tujuan</option>
+                    <select class="form-select @error('desa_tujuan') is-invalid @enderror" name="desa_tujuan" aria-label="Default select example">
+                    <option value="" disabled selected>Pilih Desa Tujuan</option>
                         @foreach ($ongkirList as $ongkir)
-                        <option value="{{ $ongkir->id }}" data-ongkos="{{ $ongkir->biaya }}">{{ $ongkir->desa_tujuan }}</option>
+                        <option value="{{ $ongkir->id }}"  data-ongkos="{{ $ongkir->biaya }}" {{ (old('desa_tujuan') == $ongkir->id) ? 'selected' : '' }}>{{ $ongkir->desa_tujuan }}</option>
                         @endforeach
                         </select>
+                        @error('desa_tujuan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>No TLPN :</td>
-                    <td><input type="text" name="tlpn" class="form-control"></td>
+                    <td>No TLPN : </td>
+                    <td><input type="text" name="tlpn" class="form-control @error('tlpn') is-invalid @enderror" value="{{ old('tlpn') }}"></td>
+                    @error('tlpn')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                     <td></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>Ongkir :</td>
+                    <td>Ongkir : </td>
                     <td></td>
-                    <td><input type="text" id="ongkos_kirim" name="ongkos_kirim" class="form-control" readonly></td>
+                    <td><input type="text" id="ongkos_kirim" name="ongkos_kirim" class="form-control" value="{{ old('ongkos_kirim') }}"  readonly></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>Pembayaran :</td>
+                    <td>Pembayaran : </td>
                     <td>
-                    <select class="form-select" name="metode_pembayaran" aria-label="Default select example">
+                    <select class="form-select @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran" aria-label="Default select example">
                         <option selected>Pilih Metode Pembayaran</option>
                         <option value="1">COD</option>
-                        <option value="2">Tranfer</option>
+                        <option value="2">Tranfer (BRI 1076 0100 5874 509/I PUTU SUDI SUASTAWA)</option>
                         </select>
+                        @error('metode_pembayaran')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </td>
                     <td></td>
                 </tr>
@@ -116,7 +138,7 @@
                     <td></td>
                     <td>Total Bayar :</td>
                     <td>
-                    <input type="text" id="total_bayar" name="total_bayar" class="form-control" readonly>
+                    <strong id="totalAmount">{{$total}}</strong>
                     </td>
                     <td></td>
                 </tr>
@@ -165,48 +187,7 @@
         }
     });
 
-    $(document).ready(function() {
-        $('.quantity-input').on('change', function() {
-            var quantity = $(this).val();
-            var price = $(this).closest('tr').find('[data-th="Price"]').text().replace('Rp', '');
-            var subtotal = quantity * price;
-            $(this).closest('tr').find('[data-th="Subtotal"]').text('Rp' + subtotal);
-          
-            // Menghitung total
-        var total = 0;
-        $('[data-th="Subtotal"]').each(function() {
-            var subtotal = parseInt($(this).text().replace('Rp', ''));
-            total += subtotal;
-        });
-
-        // Menampilkan total
-        $('[data-th="Total"]').text('Rp' + total);
-        });
-
-
-      
-        
-        $('select[name="desa_tujuan"]').change(function() {
-            var selectedOption = $(this).children("option:selected");
-            var ongkosKirim = selectedOption.data('ongkos');
-            $('#ongkos_kirim').val(ongkosKirim);
-            calculateTotalBayar();
-        });
-
-        $('#total_pembelian').change(function() {
-            calculateTotalBayar();
-        });
-
-        function calculateTotalBayar() {
-            var totalPembelian = parseFloat($('#total_pembelian').val());
-            var ongkosKirim = parseFloat($('#ongkos_kirim').val());
-
-            var totalBayar = totalPembelian + ongkosKirim;
-            var formattedTotalBayar = totalBayar.toLocaleString('id-ID');
-
-            $('#total_bayar').val(formattedTotalBayar);
-        }
-    });
+   
 </script>
 
  

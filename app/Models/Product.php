@@ -14,12 +14,18 @@ class Product extends Model
         'image',
         'id_kategori',
         'description',
-        'price'
+        'price',
+        'status'
     ]; 
 
 
     public function category()
     {
         return $this->belongsTo(Kategori::class, 'id_kategori');
+    }
+
+    public function prices()
+    {
+        return $this->hasMany(price::class);
     }
 }

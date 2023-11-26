@@ -23,7 +23,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Image</th>
                     <th scope="col">kategori</th>
-                    <th scope="col">price</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -37,7 +37,7 @@
                        
                     </td>
                     <td>{{ $product->category->nama }}</td>
-                    <td>{{ $product->price }}</td>
+                    <td>{{ $product->status }}</td>
                     <td>
                     <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a href="{{ route('item.show', $product->id) }}" class="btn btn-outline-primary">Show</a>

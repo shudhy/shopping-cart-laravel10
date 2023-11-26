@@ -18,7 +18,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg bg-warning bg-gradient">
         <div class="container-sm">
           <a class="navbar-brand" href="{{ URL('/welcome') }}">Dusna Store</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,6 +26,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto">
+            @if (Auth::check() && Auth::user()->role === 'admin')
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Master
@@ -33,23 +34,13 @@
                 <ul class="dropdown-menu" aria-labelledby="masterDropdown">
                 
                         <li><a class="dropdown-item" href="{{ URL('/itemx') }}" >Item</a></li>
-                        <li><a class="dropdown-item" >Kategori</a></li>
-                        <li><a class="dropdown-item" >Merek</a></li>
-                    
+                        <li><a class="dropdown-item" href="{{ route('kategori.index') }}">Kategori</a></li>
+                        <li><a class="dropdown-item" href="{{ route('users.index') }}">Users</a></li>
+                        <li><a class="dropdown-item" href="{{ route('ongkirs.index') }}">Ongkir</a></li>
                 </ul>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="kategoriDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Kategori
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="kategoriDropdown">
-                
-                        <li><a class="dropdown-item" >makanan & minuman</a></li>
-                        <li><a class="dropdown-item" >Alat Motor</a></li>
-                    
-                </ul>
-            </li>
-                    
+            
+            @endif    
 
                 
                 @guest
@@ -66,11 +57,23 @@
                         </a>
                     </div>
                 @else    
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Penjualan
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="masterDropdown">
+                        <li><a class="dropdown-item" href="{{ route('laporan.index') }}" >Rekap Penjualan</a></li>
+                        <li><a class="dropdown-item" href="{{ route('detailpenjualan.index') }}" >Detail Penjualan</a></li>
+                </ul>
+            </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::user()->name }}
                         </a>
+                            
+                        
                         <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('users.gantipassword', Auth::user()->id) }}" >Ganti Password</a></li>
                         <li><a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();"
