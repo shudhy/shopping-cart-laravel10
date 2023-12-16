@@ -155,6 +155,9 @@ class ProductController extends Controller
         $cart = session()->get('cart', []);
         if(isset($cart[$id])) {
             $cart[$id]['quantity']++;
+            session()->put('cart', $cart);
+            // return redirect()->back()->with('success', 'Product has been added to cart!');
+            return redirect()->route('shopping.cart')->with('success', 'Product has been added to cart!');
         } else {
             $units = $product->prices->map(function ($price) {
                 return [
@@ -172,10 +175,13 @@ class ProductController extends Controller
                 "units" => $units->toArray(),
                 "unit" => $firstPriceId,
             ];
+            session()->put('cart', $cart);
+            // return redirect()->back()->with('success', 'Product has been added to cart!');
+            return redirect()->route('shopping.cart')->with('success', 'Product has been added to cart!');
+
         }
        
-        session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Product has been added to cart!');
+       
     }
     public function minProducttoCart($id)
 {
@@ -275,7 +281,7 @@ class ProductController extends Controller
         Storage::delete('public/images/' . $product->image);
 
         // Update product with new image
-        $product->fill([
+        $product->update([
             'image'       => $gambar,
             'name'        => $request->name,
             'id_kategori' => $request->kategori,

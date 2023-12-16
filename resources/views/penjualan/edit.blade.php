@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center mt-3">
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-2 mb-3 "><a href="{{ route('laporan.index') }}" class="btn btn-primary stretched-link">Kembali</a>
@@ -34,6 +34,7 @@
                         <option value="proses" {{ $cart->status_order === 'proses' ? 'selected' : '' }}>Proses</option>
                         <option value="dikirim" {{ $cart->status_order === 'dikirim' ? 'selected' : '' }}>dikirim</option>
                         <option value="diterima" {{ $cart->status_order === 'diterima' ? 'selected' : '' }}>Diterima</option>
+                        <option value="tolak" {{ $cart->status_order === 'tolak' ? 'selected' : '' }}>Di tolak</option>
                     </select> <br>
                    
                 </div>
@@ -42,7 +43,7 @@
                         
                 
             </div>
-
+            <div style="overflow-x: auto;">
             <table class="table table-hover" id="selecteditemTable">
                 <thead>
                     <tr>
@@ -65,7 +66,7 @@
                     <td>{{ $laporan->product_id }}</td>
                     <td>{{ $laporan->product->name }}</td>
                     <?php $subtotal = $laporan->price * $laporan->quantity; ?>
-                    <td><input type="number" class="quantity-input" id="quantityInput{{ $index }}" data-item-id="{{ $laporan->id }}" value="{{ $laporan->quantity }}" ></td>
+                    <td><input type="number" class="quantity-input" style="width:30px;" id="quantityInput{{ $index }}" data-item-id="{{ $laporan->id }}" value="{{ $laporan->quantity }}" ></td>
                     <td>
                         <select class="satuan-select" data-product-id="{{ $laporan->product_id }}">
                             @foreach ($laporan->product->prices as $price)
@@ -86,21 +87,22 @@
                 
                 </tbody>
                 </table>
+</div>
                 <div class="row">
                     <div class="col"></div>
                     <div class="col"></div>
-                    <div class="col" style="text-align: center;"><strong>Total Belanja:</strong> <strong id="totalAmount" >{{ number_format($total, 0, ',', '.') }}</strong></div>
+                    <div class="col" style="text-align: right;"><strong>Total Belanja:</strong> <strong id="totalAmount" >{{ number_format($total, 0, ',', '.') }}</strong></div>
                 </div>
                 <div class="row">
                     <div class="col"></div>
                     <div class="col"></div>
-                    <div class="col" style="text-align: center;"><strong>Ongkos Kirim:</strong> <strong >{{ number_format($cart->ongkos_kirim, 0, ',', '.') }}</strong></div>
+                    <div class="col" style="text-align: right;"><strong>Ongkos Kirim:</strong> <strong >{{ number_format($cart->ongkos_kirim, 0, ',', '.') }}</strong></div>
                 </div>
                 <?php $total += $cart->ongkos_kirim; ?>
                 <div class="row">
                     <div class="col"></div>
                     <div class="col"></div>
-                    <div class="col" style="text-align: center;"><strong>Total:</strong> <strong >{{ number_format($total, 0, ',', '.') }}</strong></div>
+                    <div class="col" style="text-align: right;"><strong>Total:</strong> <strong >{{ number_format($total, 0, ',', '.') }}</strong></div>
                 </div>
                 
                 <div class="row">

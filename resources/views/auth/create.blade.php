@@ -52,9 +52,8 @@
                         </select>
                         </div>
                     </div>
-                    <div class="mb-3 row">
-                        <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Simpan">
-                    </div>
+                    
+                    <button type="submit" class="btn btn-md btn-primary ">Simpan</button>
                     
                 </form>
             </div>

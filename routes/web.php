@@ -97,4 +97,6 @@ Route::controller(LoginRegisterController::class)->group(function() {
 
         Route::delete('/delete-item/{id}', [CartController::class, 'delete'])->name('deleteCartItem');
 
+        Route::get('/get-new-order-count', [CartController::class, 'getNewOrderCount']);
+
     });

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center mt-3">
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-2 mb-3 ">
@@ -23,7 +23,7 @@
             </div>
             
         </div>
-
+        <div style="overflow-x: auto;">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -76,6 +76,7 @@
                 @endforeach  
                 </tbody>
                 </table>
+</div>
                 {{ $report->links('vendor.pagination.default') }}
     </div>    
 </div>

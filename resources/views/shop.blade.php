@@ -2,8 +2,13 @@
 <html>
 <head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
 
-    <title>Laravel 10 Shopping Cart Example - LaravelTuts.com</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Belanja kebutuhan sehari hari terlengkap di kotaraya</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -14,9 +19,10 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg bg-warning bg-gradient">
+<nav class="navbar navbar-expand-lg bg-warning bg-gradient fixed-top">
     <div class="container-sm">
           <a class="navbar-brand" href="{{ URL('/welcome') }}">Dusna Store</a>
+          
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -35,6 +41,7 @@
                 </ul>
             </li>
             
+            
             @endif
                 @guest
                 
@@ -52,7 +59,7 @@
                     </div>
                 @else  
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a id="{{ auth()->user() && auth()->user()->role === 'admin' ? 'penjualanMenu' : '' }}"  class="nav-link dropdown-toggle" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Penjualan
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="masterDropdown">
@@ -87,9 +94,12 @@
           </div>
         </div>
     </nav>    
+    <div class="row mt-5"></div>
     <div class="container">
+    
         @if(session('success'))
-            <div class="alert alert-success mt-4">
+            <div class="alert alert-success mt-3">
+            <div class="row"></div>
             {{ session('success') }}
             </div> 
         @endif
@@ -109,6 +119,36 @@
 
 
 <script>
+// Fungsi untuk memperbarui teks atau menambahkan tanda visual
+function updateNotificationStatus(newOrderCount) {
+        // Pilih elemen menu berdasarkan ID
+        var penjualanMenu = document.getElementById('penjualanMenu');
+
+        // Perbarui teks atau tambahkan tanda visual
+        if (newOrderCount > 0) {
+            penjualanMenu.innerHTML = 'Penjualan <span class="badge bg-danger">' + newOrderCount + '</span>';
+        } else {
+            penjualanMenu.innerHTML = 'Penjualan';
+        }
+    }
+
+    // Panggil fungsi untuk mendapatkan jumlah status order baru dari backend
+    // Gunakan AJAX atau metode lain untuk mengambil data dari rute atau skrip backend
+    function fetchNewOrderCount() {
+        // Misalnya, menggunakan Fetch API
+        fetch('/get-new-order-count')  // Ganti dengan URL rute atau skrip Anda
+            .then(response => response.json())
+            .then(data => {
+                // Panggil fungsi update dengan jumlah yang diterima dari backend
+                updateNotificationStatus(data.newOrderCount);
+            })
+            .catch(error => {
+                console.error('Error fetching new order count:', error);
+            });
+    }
+
+    // Panggil fungsi fetchNewOrderCount secara berkala (misalnya, setiap beberapa detik)
+    setInterval(fetchNewOrderCount, 500); 
 
     
 $(document).ready(function() {
@@ -249,7 +289,7 @@ $('#select2item').on('select2:select', function(e) {
 
  
         // Item belum ada, tambahkan item ke dalam tabel seperti yang Anda lakukan sebelumnya
-        var newRow = '<tr><td>' + nurut++ + '</td><td>' + data.id + '</td><td>' + data.text + '</td><td><input type="number" class="quantity-input" value="1"></td><td><select class="satuan-select"></select></td><td class="data-price">' + data.price + '</td><td class="subtotal" data-price="' + data.price + '" >' + data.price + '</td><td><button class="hapus-item">Hapus</button></td></tr>';
+        var newRow = '<tr><td>' + nurut++ + '</td><td>' + data.id + '</td><td>' + data.text + '</td><td><input type="number" class="quantity-input" style="width:40px;" value="1"></td><td><select class="satuan-select"></select></td><td class="data-price">' + data.price + '</td><td class="subtotal" data-price="' + data.price + '" >' + data.price + '</td><td><button class="hapus-item">Hapus</button></td></tr>';
         $('#selecteditemTable tbody').append(newRow);
 
         // Mengambil data satuan dari server (misalnya melalui permintaan Ajax)

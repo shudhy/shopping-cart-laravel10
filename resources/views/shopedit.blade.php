@@ -2,8 +2,11 @@
 <html>
 <head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Laravel 10 Shopping Cart Example - LaravelTuts.com</title>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+    <title>Belanja kebutuhan sehari hari terlengkap di kotaraya</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -34,7 +37,7 @@
                 </ul>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a id="penjualanMenu" class="nav-link dropdown-toggle" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Penjualan
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="masterDropdown">
@@ -45,7 +48,7 @@
             @endif
                 @guest
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a id="{{ auth()->user() && auth()->user()->role === 'admin' ? 'penjualanMenu' : '' }}" class="nav-link dropdown-toggle" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Penjualan
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="masterDropdown">
@@ -115,7 +118,36 @@
 
 
 <script>
+// Fungsi untuk memperbarui teks atau menambahkan tanda visual
+function updateNotificationStatus(newOrderCount) {
+        // Pilih elemen menu berdasarkan ID
+        var penjualanMenu = document.getElementById('penjualanMenu');
 
+        // Perbarui teks atau tambahkan tanda visual
+        if (newOrderCount > 0) {
+            penjualanMenu.innerHTML = 'Penjualan <span class="badge bg-danger">' + newOrderCount + '</span>';
+        } else {
+            penjualanMenu.innerHTML = 'Penjualan';
+        }
+    }
+
+    // Panggil fungsi untuk mendapatkan jumlah status order baru dari backend
+    // Gunakan AJAX atau metode lain untuk mengambil data dari rute atau skrip backend
+    function fetchNewOrderCount() {
+        // Misalnya, menggunakan Fetch API
+        fetch('/get-new-order-count')  // Ganti dengan URL rute atau skrip Anda
+            .then(response => response.json())
+            .then(data => {
+                // Panggil fungsi update dengan jumlah yang diterima dari backend
+                updateNotificationStatus(data.newOrderCount);
+            })
+            .catch(error => {
+                console.error('Error fetching new order count:', error);
+            });
+    }
+
+    // Panggil fungsi fetchNewOrderCount secara berkala (misalnya, setiap beberapa detik)
+    setInterval(fetchNewOrderCount, 500); 
     
 $(document).ready(function() {
    

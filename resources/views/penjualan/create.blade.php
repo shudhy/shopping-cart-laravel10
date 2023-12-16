@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center mt-3">
     <div class="col-md-12">
             <div class="row">
                 <div class="col-md-2 mb-3 "><a href="{{ route('laporan.index') }}" class="btn btn-primary stretched-link">Kembali</a>
@@ -36,7 +36,7 @@
 
                             <div class="form-group">
                                 <label class="font-weight-bold">Pelanggan :</label>
-                                <select id="select2User" style="width: 30%;">
+                                <select id="select2User" style="width: 40%;">
                                 <!-- Opsi pengguna akan dimasukkan di sini secara dinamis -->
                             </select>
                             </div>
@@ -44,6 +44,7 @@
             </div>
 
         </div>
+        <div style="overflow-x: auto;">
         <table class="table table-hover" id="selecteditemTable">
                 <thead>
                     <tr>
@@ -61,13 +62,14 @@
                 
                 </tbody>
                 </table>
+</div>  
                 <div class="row">
                     <div class="col"></div>
                     <div class="col"></div>
                     <div class="col" style="text-align: center;"><strong>Total:</strong> <strong id="totalAmount">0</strong></div>
                 </div>
                 <div class="form-group">
-                    <select id="select2item" style="width: 20%;">
+                    <select id="select2item" style="width: 30%;">
                         
                     </select>
                 </div>

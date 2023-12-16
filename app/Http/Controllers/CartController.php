@@ -140,5 +140,16 @@ class CartController extends Controller
     }
 
     
+public function getNewOrderCount() {
+    // Ambil jumlah status order baru dari tabel Cart
+    $newOrderCount = Cart::where('status_order', 'baru')->count();
+
+    // Kirim jumlah sebagai respons JSON
+    return response()->json(['newOrderCount' => $newOrderCount]);
+   
+}
+
+
+    
     
 }

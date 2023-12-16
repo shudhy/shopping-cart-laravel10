@@ -1,8 +1,7 @@
 @extends('auth.layouts')
 
 @section('content')
-    <div class="container mt-5 mb-5">
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-md-6">
             <div class="card">
                 <div class="card-header bg-warning bg-gradient">
@@ -90,7 +89,6 @@
                         
                 
             </div>
-        </div>
    
    
     

@@ -32,9 +32,10 @@
                         </select>
                         </div>
                     </div>
-                    <div class="mb-3 row col-md-2">
+                    
                     <a href="{{ route('users.index') }}" class="btn btn-md btn-primary">Kembali</a>
-                    </div>
+                    
+                    
                     
                 </form>
             </div>

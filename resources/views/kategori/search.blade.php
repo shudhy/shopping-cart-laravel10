@@ -19,7 +19,7 @@
             </div>
             
         </div>
-
+        <div style="overflow-x: auto;">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -48,6 +48,7 @@
                 @endforeach  
                 </tbody>
                 </table>
+</div>
                 {{ $kategoris->links('vendor.pagination.default') }}
     </div>    
 </div>
